@@ -1,7 +1,8 @@
 package com.madushan.book.publishing.Controller;
 
 import com.madushan.book.publishing.DTO.AuthorDTO;
-import com.madushan.book.publishing.Service.AuthorService;
+import com.madushan.book.publishing.DTO.BookDTO;
+import com.madushan.book.publishing.Service.BookService;
 import com.madushan.book.publishing.Util.StandardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,32 +14,32 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/author")
+@RequestMapping("api/v1/book")
 @Validated
-public class AuthorController {
+public class BookController {
 
     @Autowired
-    private AuthorService authorService;
+    private BookService bookService;
 
-//    register Author
+//        register Book
     @PostMapping(path = "/register")
-    public ResponseEntity<StandardResponse> authorRegister(@Valid @RequestBody AuthorDTO authorDTO) {
+    public ResponseEntity<StandardResponse> bookRegister(@Valid @RequestBody BookDTO bookDTO) {
 
-        String message = authorService.authorRegistration(authorDTO);
+        String message = bookService.bookRegistration(bookDTO);
 
         return new ResponseEntity<StandardResponse>(
                 new StandardResponse(201, "Successfully Registered", message), HttpStatus.CREATED
         );
     }
 
-//    get registered authors
-    @GetMapping(path = "/get-all-author")
-    public ResponseEntity<StandardResponse> getAllAuthors() {
+    //    get registered authors
+    @GetMapping(path = "/get-all-book")
+    public ResponseEntity<StandardResponse> getAllBooks() {
 
-        List<AuthorDTO> allAuthors = authorService.getAllAuthors();
+        List<BookDTO> allBooks = bookService.getAllBooks();
 
         return new ResponseEntity<StandardResponse>(
-                new StandardResponse(200, "Successfully", allAuthors), HttpStatus.OK
+                new StandardResponse(200, "Successfully", allBooks), HttpStatus.OK
         );
     }
 

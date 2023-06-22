@@ -23,13 +23,7 @@ public class AuthorServiceIMPL implements AuthorService {
     @Override
     public String authorRegistration(AuthorDTO authorDTO) {
 
-        Author author = new Author(
-                authorDTO.getAuthorId(),
-                authorDTO.getFirstName(),
-                authorDTO.getLastName(),
-                authorDTO.getEmail(),
-                authorDTO.getContactNumber()
-        );
+        Author author = modelMapper.map(authorDTO, Author.class);
 
         authorRepository.save(author);
 
