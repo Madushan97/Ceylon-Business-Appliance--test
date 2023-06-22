@@ -1,9 +1,14 @@
 package com.madushan.book.publishing.Entity;
 
+import org.springframework.validation.annotation.Validated;
+
 import javax.persistence.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Entity
 @Table(name = "author")
+@Validated
 public class Author {
 
     @Id
@@ -57,7 +62,19 @@ public class Author {
     }
 
     public void setFirstName(String firstName) {
+
+        if (!isFirstNameValid(firstName)) {
+            throw new IllegalArgumentException("First Name should contains simple and capital letters only");
+        }
         this.firstName = firstName;
+    }
+
+//    validation for the First Name
+    private boolean isFirstNameValid(String firstName) {
+
+        Pattern firstNamePattern = Pattern.compile("^[A-Za-z]+$");
+        Matcher firstNameMatcher = firstNamePattern.matcher(firstName);
+        return firstNameMatcher.matches();
     }
 
     public String getLastName() {
@@ -65,7 +82,19 @@ public class Author {
     }
 
     public void setLastName(String lastName) {
+
+        if(!isLastNameValid(lastName)) {
+            throw new IllegalArgumentException("Last Name should contains simple and capital letters only");
+        }
         this.lastName = lastName;
+    }
+
+//        validation for the Last Name
+    private boolean isLastNameValid(String lastName) {
+
+        Pattern lastNamePattern = Pattern.compile("^[A-Za-z]+$");
+        Matcher lastNameMatcher = lastNamePattern.matcher(lastName);
+        return lastNameMatcher.matches();
     }
 
     public String getEmail() {
