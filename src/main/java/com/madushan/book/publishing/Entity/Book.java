@@ -1,7 +1,6 @@
 package com.madushan.book.publishing.Entity;
 
 import com.vladmihalcea.hibernate.type.json.JsonType;
-import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 import org.springframework.validation.annotation.Validated;
@@ -32,11 +31,16 @@ public class Book {
     @Column(name = "title", length = 100)
     private String title;
 
-    public Book(Long bookId, String ISBN, ArrayList<String> category, String title) {
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private Author author;
+
+    public Book(Long bookId, String ISBN, ArrayList<String> category, String title, Author author) {
         this.bookId = bookId;
         this.ISBN = ISBN;
         this.category = category;
         this.title = title;
+        this.author = author;
     }
 
     public Book() {

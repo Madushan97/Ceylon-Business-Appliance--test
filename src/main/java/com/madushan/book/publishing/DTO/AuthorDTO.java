@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.Pattern;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,5 +26,8 @@ public class AuthorDTO {
     private String email;
 
     private String contactNumber;
+
+    private List<Book> books;
+
 
 }

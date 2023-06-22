@@ -24,4 +24,7 @@ public class BookDTO {
     @Pattern(regexp = "^[a-zA-Z0-9]{13}$", message = "Title should contain only alphanumerics")
     private String title;
 
+    private Author author;
+
+
 }

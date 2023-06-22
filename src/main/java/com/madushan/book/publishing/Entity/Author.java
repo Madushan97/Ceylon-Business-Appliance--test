@@ -3,6 +3,7 @@ package com.madushan.book.publishing.Entity;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,6 +28,9 @@ public class Author {
 
     @Column(name = "contact_number", length = 45, nullable = false)
     private String contactNumber;
+
+    @OneToMany(mappedBy = "author")
+    private List<Book> books;
 
     public Author(int authorId, String firstName, String lastName, String email, String contactNumber) {
         this.authorId = authorId;
