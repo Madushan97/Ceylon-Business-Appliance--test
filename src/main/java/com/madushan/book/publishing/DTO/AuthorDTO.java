@@ -1,5 +1,6 @@
 package com.madushan.book.publishing.DTO;
 
+import com.madushan.book.publishing.Entity.Book;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,4 +25,5 @@ public class AuthorDTO {
     private String email;
 
     private String contactNumber;
+
 }

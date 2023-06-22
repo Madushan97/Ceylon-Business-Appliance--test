@@ -28,11 +28,6 @@ public class Author {
     @Column(name = "contact_number", length = 45, nullable = false)
     private String contactNumber;
 
-//    TODO
-
-
-//    all args constructor
-
     public Author(int authorId, String firstName, String lastName, String email, String contactNumber) {
         this.authorId = authorId;
         this.firstName = firstName;
@@ -41,13 +36,8 @@ public class Author {
         this.contactNumber = contactNumber;
     }
 
-//    No args constructor
-
     public Author() {
-
     }
-
-//    getters setters
 
     public int getAuthorId() {
         return authorId;
@@ -112,8 +102,6 @@ public class Author {
     public void setContactNumber(String contactNumber) {
         this.contactNumber = contactNumber;
     }
-
-//    toString()
 
     @Override
     public String toString() {
