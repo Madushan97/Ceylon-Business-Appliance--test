@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
+import java.util.List;
 
 @Validated
 @AllArgsConstructor
@@ -14,12 +15,10 @@ import java.util.ArrayList;
 @Data
 public class BookDTO {
 
-    private Long bookId;
-
     @Pattern(regexp = "^[a-zA-Z0-9]{13}$", message = "Title should contain only alphanumerics")
     private String ISBN;
 
-    private ArrayList category;
+    private List<String> category;
 
     @Pattern(regexp = "^[a-zA-Z0-9]{13}$", message = "Title should contain only alphanumerics")
     private String title;

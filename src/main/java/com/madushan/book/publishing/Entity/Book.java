@@ -1,15 +1,21 @@
 package com.madushan.book.publishing.Entity;
 
+import com.madushan.book.publishing.DTO.AuthorDTO;
 import com.vladmihalcea.hibernate.type.json.JsonType;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "books")
 @Validated
@@ -19,41 +25,20 @@ import java.util.regex.Pattern;
 public class Book {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long bookId;
-
     @Column(name = "isbn", length = 13, nullable = false)
     private String ISBN;
 
+    @ElementCollection
     @Column(name = "category", length = 300)
-    private ArrayList<String> category;
+    @CollectionTable(name = "book_category", joinColumns = @JoinColumn(name = "isbn"))
+    private List<String> category;
 
     @Column(name = "title", length = 100)
     private String title;
 
     @ManyToOne
-    @JoinColumn(name = "author_id")
+    @JoinColumn(name = "author_id", nullable = false)
     private Author author;
-
-    public Book(Long bookId, String ISBN, ArrayList<String> category, String title, Author author) {
-        this.bookId = bookId;
-        this.ISBN = ISBN;
-        this.category = category;
-        this.title = title;
-        this.author = author;
-    }
-
-    public Book() {
-
-    }
-
-    public Long getBookId() {
-        return bookId;
-    }
-
-    public void setBookId(Long bookId) {
-        this.bookId = bookId;
-    }
 
     public String getISBN() {
         return ISBN;
@@ -62,6 +47,7 @@ public class Book {
     public void setISBN(String ISBN) {
 
         if(!isISBNValid(ISBN)) {
+
             throw new IllegalArgumentException("ISBN should only contains alphanumeric");
         }
         this.ISBN = ISBN;
@@ -77,12 +63,20 @@ public class Book {
         return ISBNMatcher.matches();
     }
 
-    public ArrayList getCategory() {
+    public List<String> getCategory() {
         return category;
     }
 
-    public void setCategory(ArrayList category) {
+    public void setCategory(List<String> category) {
         this.category = category;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 
     public String getTitle() {
@@ -107,7 +101,6 @@ public class Book {
     @Override
     public String toString() {
         return "Book{" +
-                "bookId=" + bookId +
                 ", ISBN='" + ISBN + '\'' +
                 ", category=" + category +
                 ", title='" + title + '\'' +

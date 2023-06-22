@@ -10,4 +10,5 @@ public interface BookService {
 
     List<BookDTO> getAllBooks();
 
+    BookDTO searchByISBN(String isbn);
 }

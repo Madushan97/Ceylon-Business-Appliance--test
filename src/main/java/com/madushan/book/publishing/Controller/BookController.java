@@ -28,6 +28,7 @@ public class BookController {
         String message = bookService.bookRegistration(bookDTO);
 
         return new ResponseEntity<StandardResponse>(
+
                 new StandardResponse(201, "Successfully Registered", message), HttpStatus.CREATED
         );
     }
@@ -39,7 +40,20 @@ public class BookController {
         List<BookDTO> allBooks = bookService.getAllBooks();
 
         return new ResponseEntity<StandardResponse>(
+
                 new StandardResponse(200, "Successfully", allBooks), HttpStatus.OK
+        );
+    }
+
+//    get books by isbn
+    @GetMapping( path = "/searchByISBN", params = {"isbn"})
+    public ResponseEntity<StandardResponse> searchByISBN(@RequestParam(value = "isbn") String isbn) {
+
+        BookDTO searchByISBN = bookService.searchByISBN(isbn);
+
+        return new ResponseEntity<StandardResponse>(
+
+                new StandardResponse(200, "Book found", searchByISBN), HttpStatus.OK
         );
     }
 

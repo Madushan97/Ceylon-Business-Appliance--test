@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookServiceIMPL implements BookService {
@@ -49,5 +50,27 @@ public class BookServiceIMPL implements BookService {
 
             throw new RuntimeException("No Books in DB");
         }
+    }
+
+    @Override
+    public BookDTO searchByISBN(String isbn) {
+
+        Optional<Book> bookOptional = bookRepository.findById(isbn);
+
+//        check whether ISBN is available or not
+        if (bookOptional.isPresent()) {
+
+            Book book = bookOptional.get();
+
+//            convert entity to DTO using ModelMapper
+            BookDTO bookDTO = modelMapper.map(book, BookDTO.class);
+
+            return bookDTO;
+
+        } else {
+
+            throw new RuntimeException("This ISBN " + isbn + " not in DB");
+        }
+
     }
 }
