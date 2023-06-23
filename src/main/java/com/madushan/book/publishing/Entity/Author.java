@@ -1,5 +1,13 @@
 package com.madushan.book.publishing.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.vladmihalcea.hibernate.type.json.JsonType;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
@@ -10,6 +18,9 @@ import java.util.regex.Pattern;
 @Entity
 @Table(name = "author")
 @Validated
+@TypeDefs({
+        @TypeDef(name = "json", typeClass = JsonType.class)
+})
 public class Author {
 
     @Id
@@ -29,19 +40,16 @@ public class Author {
     @Column(name = "contact_number", length = 45, nullable = false)
     private String contactNumber;
 
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonBackReference
+//    @JsonIgnoreProperties("author")
+    @Type(type = "json")
     private List<Book> books;
 
-    public Author(int authorId, String firstName, String lastName, String email, String contactNumber) {
-        this.authorId = authorId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.contactNumber = contactNumber;
-    }
+    @Column(name = "like_count", length = 100)
+    private Integer likeCount;
 
-    public Author() {
-    }
+//    getters & setters (to avoid below boiler plate code we can use @Data annotation to get (@Getter, @Setter and @ToString))
 
     public int getAuthorId() {
         return authorId;
@@ -49,46 +57,6 @@ public class Author {
 
     public void setAuthorId(int authorId) {
         this.authorId = authorId;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-
-        if (!isFirstNameValid(firstName)) {
-            throw new IllegalArgumentException("First Name should contains simple and capital letters only");
-        }
-        this.firstName = firstName;
-    }
-
-//    validation for the First Name
-    private boolean isFirstNameValid(String firstName) {
-
-        Pattern firstNamePattern = Pattern.compile("^[A-Za-z]+$");
-        Matcher firstNameMatcher = firstNamePattern.matcher(firstName);
-        return firstNameMatcher.matches();
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-
-        if(!isLastNameValid(lastName)) {
-            throw new IllegalArgumentException("Last Name should contains simple and capital letters only");
-        }
-        this.lastName = lastName;
-    }
-
-//        validation for the Last Name
-    private boolean isLastNameValid(String lastName) {
-
-        Pattern lastNamePattern = Pattern.compile("^[A-Za-z]+$");
-        Matcher lastNameMatcher = lastNamePattern.matcher(lastName);
-        return lastNameMatcher.matches();
     }
 
     public String getEmail() {
@@ -107,6 +75,62 @@ public class Author {
         this.contactNumber = contactNumber;
     }
 
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
+
+    public Integer getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(Integer likeCount) {
+        this.likeCount = likeCount;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+//    first name validation and set it
+    public void setFirstName(String firstName) {
+
+        if (!isFirstNameValid(firstName)) {
+            throw new IllegalArgumentException("First Name should contains simple and capital letters only");
+        }
+        this.firstName = firstName;
+    }
+
+    private boolean isFirstNameValid(String firstName) {
+
+        Pattern firstNamePattern = Pattern.compile("^[A-Za-z]+$");
+        Matcher firstNameMatcher = firstNamePattern.matcher(firstName);
+        return firstNameMatcher.matches();
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+//    lastName validation and set it
+    public void setLastName(String lastName) {
+
+        if(!isLastNameValid(lastName)) {
+            throw new IllegalArgumentException("Last Name should contains simple and capital letters only");
+        }
+        this.lastName = lastName;
+    }
+
+    private boolean isLastNameValid(String lastName) {
+
+        Pattern lastNamePattern = Pattern.compile("^[A-Za-z]+$");
+        Matcher lastNameMatcher = lastNamePattern.matcher(lastName);
+        return lastNameMatcher.matches();
+    }
+
     @Override
     public String toString() {
         return "Author{" +
@@ -115,6 +139,9 @@ public class Author {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", contactNumber='" + contactNumber + '\'' +
+                ", books=" + books +
+                ", likeCount=" + likeCount +
                 '}';
     }
 }
+
