@@ -19,9 +19,9 @@ import java.util.regex.Pattern;
 @Entity
 @Table(name = "books")
 @Validated
-@TypeDefs({
-        @TypeDef(name = "json", typeClass = JsonType.class)
-})
+//@TypeDefs({
+//        @TypeDef(name = "json", typeClass = JsonType.class)
+//})
 public class Book {
 
     @Id
@@ -64,6 +64,7 @@ public class Book {
         this.ISBN = ISBN;
     }
 
+//    ISBN validation
     private boolean isISBNValid(String ISBN) {
 
 //        remove hyphens or spaces
@@ -94,6 +95,7 @@ public class Book {
         return title;
     }
 
+//    title validation
     public void setTitle(String title) {
 
         if (!isTitleValid(title)) {

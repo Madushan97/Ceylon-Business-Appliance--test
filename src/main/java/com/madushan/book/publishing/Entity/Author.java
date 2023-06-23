@@ -1,5 +1,7 @@
 package com.madushan.book.publishing.Entity;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
@@ -32,16 +34,8 @@ public class Author {
     @OneToMany(mappedBy = "author")
     private List<Book> books;
 
-    public Author(int authorId, String firstName, String lastName, String email, String contactNumber) {
-        this.authorId = authorId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.contactNumber = contactNumber;
-    }
-
-    public Author() {
-    }
+    @Column(name = "like_count", length = 100)
+    private int likeCount;
 
     public int getAuthorId() {
         return authorId;
@@ -49,46 +43,6 @@ public class Author {
 
     public void setAuthorId(int authorId) {
         this.authorId = authorId;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-
-        if (!isFirstNameValid(firstName)) {
-            throw new IllegalArgumentException("First Name should contains simple and capital letters only");
-        }
-        this.firstName = firstName;
-    }
-
-//    validation for the First Name
-    private boolean isFirstNameValid(String firstName) {
-
-        Pattern firstNamePattern = Pattern.compile("^[A-Za-z]+$");
-        Matcher firstNameMatcher = firstNamePattern.matcher(firstName);
-        return firstNameMatcher.matches();
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-
-        if(!isLastNameValid(lastName)) {
-            throw new IllegalArgumentException("Last Name should contains simple and capital letters only");
-        }
-        this.lastName = lastName;
-    }
-
-//        validation for the Last Name
-    private boolean isLastNameValid(String lastName) {
-
-        Pattern lastNamePattern = Pattern.compile("^[A-Za-z]+$");
-        Matcher lastNameMatcher = lastNamePattern.matcher(lastName);
-        return lastNameMatcher.matches();
     }
 
     public String getEmail() {
@@ -107,14 +61,60 @@ public class Author {
         this.contactNumber = contactNumber;
     }
 
-    @Override
-    public String toString() {
-        return "Author{" +
-                "authorId=" + authorId +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", contactNumber='" + contactNumber + '\'' +
-                '}';
+    public List<Book> getBooks() {
+        return books;
     }
-}
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
+
+    public int getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+//    first name validation and set it
+    public void setFirstName(String firstName) {
+
+        if (!isFirstNameValid(firstName)) {
+            throw new IllegalArgumentException("First Name should contains simple and capital letters only");
+        }
+        this.firstName = firstName;
+    }
+
+    private boolean isFirstNameValid(String firstName) {
+
+        Pattern firstNamePattern = Pattern.compile("^[A-Za-z]+$");
+        Matcher firstNameMatcher = firstNamePattern.matcher(firstName);
+        return firstNameMatcher.matches();
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+//    lastName validation and set it
+    public void setLastName(String lastName) {
+
+        if(!isLastNameValid(lastName)) {
+            throw new IllegalArgumentException("Last Name should contains simple and capital letters only");
+        }
+        this.lastName = lastName;
+    }
+
+    private boolean isLastNameValid(String lastName) {
+
+        Pattern lastNamePattern = Pattern.compile("^[A-Za-z]+$");
+        Matcher lastNameMatcher = lastNamePattern.matcher(lastName);
+        return lastNameMatcher.matches();
+    }
+ }
+

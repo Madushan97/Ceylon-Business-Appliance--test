@@ -29,5 +29,8 @@ public class AuthorDTO {
 
     private List<Book> books;
 
+    private int likeCount;
+
+
 
 }
