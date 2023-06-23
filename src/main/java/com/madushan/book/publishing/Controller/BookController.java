@@ -25,11 +25,11 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
-//        register Book
+//     register Book
     @PostMapping(path = "/register")
     public ResponseEntity<StandardResponse> bookRegister(@Valid @RequestBody BookDTO bookDTO) {
 
-//        check whether author is there
+//    check whether author is there
         if (bookDTO.getAuthor() == null) {
 
             logger.warn("Author is required for book registration");
@@ -39,7 +39,6 @@ public class BookController {
                     HttpStatus.BAD_REQUEST
             );
         }
-
         String message = bookService.bookRegistration(bookDTO);
 
         logger.info("Book registered successfully");
@@ -51,7 +50,7 @@ public class BookController {
         );
     }
 
-    //    get registered authors
+//    get registered authors
     @GetMapping(path = "/get-all-book")
     public ResponseEntity<StandardResponse> getAllBooks() {
 

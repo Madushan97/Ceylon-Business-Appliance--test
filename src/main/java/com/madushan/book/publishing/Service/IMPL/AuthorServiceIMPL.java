@@ -1,6 +1,7 @@
 package com.madushan.book.publishing.Service.IMPL;
 
 import com.madushan.book.publishing.DTO.AuthorDTO;
+import com.madushan.book.publishing.DTO.BookDTO;
 import com.madushan.book.publishing.Entity.Author;
 import com.madushan.book.publishing.Repository.AuthorRepository;
 import com.madushan.book.publishing.Service.AuthorService;
@@ -41,7 +42,18 @@ public class AuthorServiceIMPL implements AuthorService {
 
             for (Author author : allAuthors) {
 
-                AuthorDTO authorDTO = modelMapper.map(author, AuthorDTO.class);
+                AuthorDTO authorDTO = new AuthorDTO(
+                        // we can replace this entity to DTO conversion using ModelMapper as shown is the below
+                        author.getAuthorId(),
+                        author.getFirstName(),
+                        author.getLastName(),
+                        author.getEmail(),
+                        author.getContactNumber(),
+                        author.getBooks(),
+                        author.getLikeCount()
+                );
+
+//                AuthorDTO authorDTO = modelMapper.map(author, AuthorDTO.class);
                 authorList.add(authorDTO);
             }
 

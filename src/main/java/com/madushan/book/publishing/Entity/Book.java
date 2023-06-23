@@ -1,5 +1,7 @@
 package com.madushan.book.publishing.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.madushan.book.publishing.DTO.AuthorDTO;
 import com.vladmihalcea.hibernate.type.json.JsonType;
 import lombok.AllArgsConstructor;
@@ -19,9 +21,6 @@ import java.util.regex.Pattern;
 @Entity
 @Table(name = "books")
 @Validated
-//@TypeDefs({
-//        @TypeDef(name = "json", typeClass = JsonType.class)
-//})
 public class Book {
 
     @Id
@@ -36,20 +35,16 @@ public class Book {
     @Column(name = "title", length = 100)
     private String title;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", nullable = false)
+//    @JsonManagedReference
+    @JsonIgnoreProperties("books")
     private Author author;
 
-    @Column(name = "like_count", length = 100)
-    private int likeCount;
+    @Column(name = "like_count", length = 100, columnDefinition = "int default 0")
+    private Integer likeCount;
 
-    public int getLikeCount() {
-        return likeCount;
-    }
-
-    public void setLikeCount(int likeCount) {
-        this.likeCount = likeCount;
-    }
+//  getters & setters
 
     public String getISBN() {
         return ISBN;
@@ -64,7 +59,7 @@ public class Book {
         this.ISBN = ISBN;
     }
 
-//    ISBN validation
+    // ISBN validation
     private boolean isISBNValid(String ISBN) {
 
 //        remove hyphens or spaces
@@ -95,7 +90,7 @@ public class Book {
         return title;
     }
 
-//    title validation
+    // title validation
     public void setTitle(String title) {
 
         if (!isTitleValid(title)) {
@@ -111,5 +106,22 @@ public class Book {
         return ISBNMatcher.matches();
     }
 
+    public Integer getLikeCount() {
+        return likeCount;
+    }
 
+    public void setLikeCount(Integer likeCount) {
+        this.likeCount = likeCount;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "ISBN='" + ISBN + '\'' +
+                ", category=" + category +
+                ", title='" + title + '\'' +
+                ", author=" + author +
+                ", likeCount=" + likeCount +
+                '}';
+    }
 }

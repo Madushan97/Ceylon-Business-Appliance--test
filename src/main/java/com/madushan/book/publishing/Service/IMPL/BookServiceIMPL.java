@@ -71,7 +71,6 @@ public class BookServiceIMPL implements BookService {
 
             throw new RuntimeException("This ISBN " + isbn + " not in DB");
         }
-
     }
 
     @Override

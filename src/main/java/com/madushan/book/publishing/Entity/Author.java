@@ -1,7 +1,13 @@
 package com.madushan.book.publishing.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.vladmihalcea.hibernate.type.json.JsonType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
@@ -12,6 +18,9 @@ import java.util.regex.Pattern;
 @Entity
 @Table(name = "author")
 @Validated
+@TypeDefs({
+        @TypeDef(name = "json", typeClass = JsonType.class)
+})
 public class Author {
 
     @Id
@@ -31,11 +40,16 @@ public class Author {
     @Column(name = "contact_number", length = 45, nullable = false)
     private String contactNumber;
 
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonBackReference
+//    @JsonIgnoreProperties("author")
+    @Type(type = "json")
     private List<Book> books;
 
     @Column(name = "like_count", length = 100)
-    private int likeCount;
+    private Integer likeCount;
+
+//    getters & setters (to avoid below boiler plate code we can use @Data annotation to get (@Getter, @Setter and @ToString))
 
     public int getAuthorId() {
         return authorId;
@@ -69,11 +83,11 @@ public class Author {
         this.books = books;
     }
 
-    public int getLikeCount() {
+    public Integer getLikeCount() {
         return likeCount;
     }
 
-    public void setLikeCount(int likeCount) {
+    public void setLikeCount(Integer likeCount) {
         this.likeCount = likeCount;
     }
 
@@ -116,5 +130,18 @@ public class Author {
         Matcher lastNameMatcher = lastNamePattern.matcher(lastName);
         return lastNameMatcher.matches();
     }
- }
+
+    @Override
+    public String toString() {
+        return "Author{" +
+                "authorId=" + authorId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", contactNumber='" + contactNumber + '\'' +
+                ", books=" + books +
+                ", likeCount=" + likeCount +
+                '}';
+    }
+}
 
