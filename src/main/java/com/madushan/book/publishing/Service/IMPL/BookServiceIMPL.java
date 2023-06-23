@@ -73,4 +73,25 @@ public class BookServiceIMPL implements BookService {
         }
 
     }
+
+    @Override
+    public String likeBook(String isbn) {
+
+        Optional<Book> bookLike = bookRepository.findById(isbn);
+
+//        check whether ISBN is available or not
+        if (bookLike.isPresent()) {
+
+            Book book = bookLike.get();
+
+            book.setLikeCount(book.getLikeCount() + 1);
+            bookRepository.save(book);
+
+            return "Book liked successfully.";
+
+        } else {
+
+            throw new RuntimeException("Book not found");
+        }
+    }
 }

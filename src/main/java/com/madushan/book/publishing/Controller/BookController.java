@@ -25,11 +25,21 @@ public class BookController {
     @PostMapping(path = "/register")
     public ResponseEntity<StandardResponse> bookRegister(@Valid @RequestBody BookDTO bookDTO) {
 
+//        check whether author is there
+        if (bookDTO.getAuthor() == null) {
+
+            return new ResponseEntity<StandardResponse>(
+                    new StandardResponse(400, "Author is required for book registration", null),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+
         String message = bookService.bookRegistration(bookDTO);
 
         return new ResponseEntity<StandardResponse>(
 
-                new StandardResponse(201, "Successfully Registered", message), HttpStatus.CREATED
+                new StandardResponse(201, "Successfully Registered", message),
+                HttpStatus.CREATED
         );
     }
 
@@ -41,7 +51,8 @@ public class BookController {
 
         return new ResponseEntity<StandardResponse>(
 
-                new StandardResponse(200, "Successfully", allBooks), HttpStatus.OK
+                new StandardResponse(200, "Successfully", allBooks),
+                HttpStatus.OK
         );
     }
 
@@ -53,8 +64,21 @@ public class BookController {
 
         return new ResponseEntity<StandardResponse>(
 
-                new StandardResponse(200, "Book found", searchByISBN), HttpStatus.OK
+                new StandardResponse(200, "Book found", searchByISBN),
+                HttpStatus.OK
         );
     }
 
+//    Like feature
+    @PostMapping(path = "/like/{isbn}")
+    public ResponseEntity<StandardResponse> likeBook(@PathVariable(value = "isbn") String isbn) {
+
+        String message = bookService.likeBook(isbn);
+
+        return new ResponseEntity<StandardResponse>(
+
+                new StandardResponse(200, "Book found", message),
+                HttpStatus.OK
+        );
+    }
 }

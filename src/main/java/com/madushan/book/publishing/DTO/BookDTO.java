@@ -15,6 +15,8 @@ import java.util.List;
 @Data
 public class BookDTO {
 
+    private Long id;
+
     @Pattern(regexp = "^[a-zA-Z0-9]{13}$", message = "Title should contain only alphanumerics")
     private String ISBN;
 
@@ -24,6 +26,8 @@ public class BookDTO {
     private String title;
 
     private Author author;
+
+    private int likeCount;
 
 
 }

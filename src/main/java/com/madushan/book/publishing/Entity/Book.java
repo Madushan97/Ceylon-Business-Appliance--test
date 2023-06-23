@@ -40,6 +40,17 @@ public class Book {
     @JoinColumn(name = "author_id", nullable = false)
     private Author author;
 
+    @Column(name = "like_count", length = 100)
+    private int likeCount;
+
+    public int getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
+    }
+
     public String getISBN() {
         return ISBN;
     }
@@ -98,12 +109,5 @@ public class Book {
         return ISBNMatcher.matches();
     }
 
-    @Override
-    public String toString() {
-        return "Book{" +
-                ", ISBN='" + ISBN + '\'' +
-                ", category=" + category +
-                ", title='" + title + '\'' +
-                '}';
-    }
+
 }
